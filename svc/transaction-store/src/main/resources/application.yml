@@ -1,0 +1,77 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: transaction-store
+    # ----------------------------------------------------------
+    # R2DBC — Reactive non-blocking PostgreSQL connection
+    # Database: movo_transactions (owned exclusively by this service)
+    # ----------------------------------------------------------
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/movo_transactions
+    username: movo_admin
+    password: localdev_password_change_in_prod
+    pool:
+      enabled: true
+      initial-size: 5
+      max-size: 20
+      max-idle-time: 30m
+      validation-query: SELECT 1
+
+  # ----------------------------------------------------------
+  # Flyway — Database migrations
+  # Flyway uses JDBC, while application queries use R2DBC.
+  # ----------------------------------------------------------
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/movo_transactions
+    user: movo_admin
+    password: localdev_password_change_in_prod
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all                 # Wait for all ISR replicas — financial data safety
+      retries: 3
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 1
+    consumer:
+      group-id: transaction-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.movo.events"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2s
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 5
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+logging:
+  level:
+    com.personalwealth: DEBUG
+    org.springframework.r2dbc: INFO
+    io.r2dbc.postgresql: WARN

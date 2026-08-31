@@ -1,0 +1,28 @@
+<!-- Personal Wealth — ClickHouse local dev configuration -->
+<clickhouse>
+    <!-- Allow all connections in local dev (production: restrict to service CIDRs) -->
+    <listen_host>0.0.0.0</listen_host>
+
+    <!-- Max memory: 2GB for local dev (production: tune per node RAM) -->
+    <max_server_memory_usage>2147483648</max_server_memory_usage>
+
+    <!-- Max concurrent queries for local dev -->
+    <max_concurrent_queries>50</max_concurrent_queries>
+
+    <!-- Background merge threads -->
+    <background_pool_size>8</background_pool_size>
+    <background_merges_mutations_concurrency_ratio>2</background_merges_mutations_concurrency_ratio>
+
+    <!-- Merge tree mutations configuration -->
+    <merge_tree>
+        <number_of_free_entries_in_pool_to_execute_mutation>10</number_of_free_entries_in_pool_to_execute_mutation>
+        <!-- Must be <= background_pool_size * background_merges_mutations_concurrency_ratio (8 * 2 = 16) -->
+        <number_of_free_entries_in_pool_to_execute_optimize_entire_partition>15</number_of_free_entries_in_pool_to_execute_optimize_entire_partition>
+    </merge_tree>
+
+    <!-- Log level for local dev -->
+    <logger>
+        <level>warning</level>
+        <console>1</console>
+    </logger>
+</clickhouse>

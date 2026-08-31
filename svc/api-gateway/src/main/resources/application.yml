@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+            default-filters:
+              - name: RequestRateLimiter
+                args:
+                  redis-rate-limiter.replenishRate: 100
+                  redis-rate-limiter.burstCapacity: 200
+                  redis-rate-limiter.requestedTokens: 1
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+
+logging:
+  pattern:
+    console: "%d{ISO8601} [%thread] [traceId=%X{traceId}] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.personalwealth: DEBUG
+    org.springframework.cloud.gateway: INFO

@@ -27,11 +27,13 @@
     <modules>
 
         <!-- Shared Libraries -->
+        <module>libs/common-constants</module>
         <module>libs/money</module>
         <module>libs/events</module>
         <module>libs/testing</module>
         <module>libs/observability</module>
         <module>libs/security-abstraction</module>
+        <module>libs/common-errors</module>
 
         <!-- Microservices -->
         <module>svc/api-gateway</module>
@@ -157,6 +159,19 @@
                 <artifactId>security-abstraction</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.movo</groupId>
+                <artifactId>common-errors</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.movo</groupId>
+                <artifactId>common-constants</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <!-- ================================================== -->
             <!-- R2DBC PostgreSQL -->

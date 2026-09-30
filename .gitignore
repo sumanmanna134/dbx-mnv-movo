@@ -34,6 +34,10 @@ build/
 
 ### VS Code ###
 .vscode/
+.idea/*.*
+.idea/encodings.xml
+.idea/sqldialects.xml
+graphify-out
 
 ### Mac OS ###
 .DS_Store

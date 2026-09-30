@@ -94,6 +94,15 @@ public final class Money {
     public boolean isNegative(){
         return this.amount.compareTo(BigDecimal.ZERO) < 0;
     }
+
+    public boolean isPositive(){
+        return this.amount.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    public boolean isStrictlyPositive(){
+        return this.amount.compareTo(BigDecimal.ZERO) >=0;
+    }
+
     public boolean isGreaterThanOrEqualTo(Money other){
         return this.amount.compareTo(other.amount) >= 0;
     }
@@ -134,6 +143,14 @@ public final class Money {
     public String toString() {
         return currency.getSymbol()+amount.toPlainString();
 
+    }
+
+    public Money positive(){
+        if(!this.isStrictlyPositive()){
+            throw new IllegalArgumentException("Transaction amount must be strictly positive, was: " + amount);
+        }else {
+            return this;
+        }
     }
 
     private void assertSameCurrency(Money other) {

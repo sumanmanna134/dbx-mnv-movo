@@ -68,6 +68,10 @@
             <groupId>com.movo</groupId>
             <artifactId>money</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.movo</groupId>
+            <artifactId>common-errors</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.movo</groupId>
@@ -100,8 +104,8 @@
         </dependency>
         <dependency>
             <groupId>com.movo</groupId>
-            <artifactId>testing</artifactId>
-            <scope>test</scope>
+            <artifactId>events</artifactId>
         </dependency>
+
     </dependencies>
 </project>

@@ -16,6 +16,10 @@
     <dependencies>
         <dependency>
             <groupId>com.movo</groupId>
+            <artifactId>common-constants</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.movo</groupId>
             <artifactId>money</artifactId>
         </dependency>
         <dependency>
